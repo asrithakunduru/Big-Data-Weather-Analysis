@@ -1,0 +1,21 @@
+city,timestamp,temperature,humidity,weather_description,wind_speed,cloudiness
+Toronto,1701548054,276.09,89,overcast clouds,3.09,100
+Vancouver,1701548052,281.2,86,few clouds,4.12,20
+Calgary,1701548348,276.25,35,overcast clouds,2.57,100
+Montreal,1701548636,274.42,92,overcast clouds,3.6,100
+Edmonton,1701548341,272.38,58,broken clouds,1.34,64
+Ottawa,1701548284,274.92,91,overcast clouds,2.06,100
+Quebec City,1701548225,272.9,92,overcast clouds,5.14,100
+Winnipeg,1701548312,274.7,57,broken clouds,8.23,75
+Halifax,1701548250,280.45,95,overcast clouds,0,100
+Victoria,1701548435,281.88,79,broken clouds,15.43,75
+Regina,1701548156,273.93,55,few clouds,4.12,20
+Saskatoon,1701548273,265.14,100,mist,3.09,100
+St. John's,1701548108,277.1,93,broken clouds,3.09,75
+Hamilton,1701548343,275.43,96,light intensity drizzle,4.63,100
+Kelowna,1701548180,275.99,74,few clouds,3.09,20
+London,1701548100,276.81,90,mist,2.57,100
+Thunder Bay,1701548137,273.1,64,overcast clouds,1.54,100
+Charlottetown,1701548334,276.38,98,light rain,7.2,100
+Fredericton,1701548344,273.39,94,snow,2.57,100
+Whitehorse,1701548111,262.58,92,light snow,1.54,100
