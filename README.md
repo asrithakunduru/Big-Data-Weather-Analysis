@@ -1,9 +1,8 @@
 
-
 **Weather Monitoring and Prediction System**
 
 **Overview**
-This project implements a real-time weather monitoring and prediction system. It uses Apache Kafka to collect live weather data from the OpenWeatherMap API, processes the data using Apache Spark (PySpark), predicts future temperatures using a linear regression model, and visualizes the results through an interactive dashboard built with Dash. The system is deployed using a distributed cluster architecture consisting of one master node and one slave node.
+This project implements a real-time weather monitoring and prediction system using big data technologies. It leverages Apache Kafka to collect live weather data from the OpenWeatherMap API, processes the data using Apache Spark (PySpark), applies machine learning to predict temperatures, and visualizes the results using an interactive dashboard built with Dash. The system is deployed in a distributed environment with a master-slave cluster setup.
 
 **Technologies Used**
 
@@ -14,64 +13,63 @@ This project implements a real-time weather monitoring and prediction system. It
 * Python (pandas, requests, csv, json)
 
 **System Architecture**
-The project is deployed using a master-slave cluster configuration:
+The system follows a master-slave cluster configuration:
 
-* The **master node** coordinates Spark jobs and manages resource allocation.
-* The **slave node** runs the Spark executor processes that carry out the data processing tasks.
-* Both nodes communicate over the same network and use a shared directory or network file system for file access.
-* Kafka is hosted on the master node, and Spark is configured in standalone cluster mode using environment variables (`SPARK_HOME`) and configuration files (`conf/slaves`, `start-slave.sh`, etc.).
+* The **master node** manages Spark job coordination and resource allocation.
+* The **slave node** executes Spark tasks in parallel.
+* Data is shared via a common directory or a network file system.
+* Kafka runs on the master node. Spark is configured in standalone cluster mode with appropriate settings in `SPARK_HOME`, `conf/slaves`, and started using `start-slave.sh`.
 
 **Workflow**
 
 1. **Data Collection with Kafka**
 
-   * Fetches real-time weather data from the OpenWeatherMap API for multiple Canadian cities.
-   * Stores the data in `weather_forecast.csv` and `predict_forecast.csv`.
-   * Publishes data to the Kafka topic named `weather_topic`.
+   * The script `kafkafetch.ipynb` fetches live weather data for multiple Canadian cities using the OpenWeatherMap API.
+   * The collected data is written to `weather_forecast.csv` and `predict_forecast.csv`.
+   * The data is also published to a Kafka topic named `weather_topic`.
 
-2. **Data Analysis with PySpark**
+2. **Data Analysis and Prediction with PySpark**
 
-   * Loads the CSV files into Spark DataFrames.
-   * Converts temperature, humidity, wind speed, and cloudiness columns to appropriate numeric types.
-   * Calculates average weather statistics for each city.
-   * Uses Spark MLlib to apply a linear regression model and predict temperature.
+   * The notebook `analysis.ipynb` loads the weather data, converts numeric columns, and calculates per-city statistics.
+   * The notebook `prediction.ipynb` builds and applies a linear regression model using Spark MLlib to predict temperature based on humidity, wind speed, and cloudiness.
 
 3. **Visualization with Dash**
 
-   * Displays bar charts comparing actual and predicted values for temperature and humidity.
-   * Provides an interactive interface for comparing city-wise forecasts.
+   * The script `dashboard.py` launches a Dash application to visualize actual vs. predicted values of temperature and humidity.
+   * The dashboard allows users to interactively compare forecasts city-wise.
 
-**Project Structure**
+**Project Files**
 
-* `weather_forecast.csv` – Real-time collected weather data
-* `predict_forecast.csv` – Predicted weather data for the next day
-* `kafka_producer.py` – Script to fetch and stream data into Kafka
-* `spark_analysis.py` – PySpark script for calculating weather statistics
-* `temperature_prediction.py` – Spark ML pipeline for temperature prediction
-* `dashboard.py` – Dash web application for visualization
-* `README.md` – Documentation file
+* `kafkafetch.ipynb`: Fetches weather data and sends it to Kafka
+* `weather_forecast.csv`: Collected weather data (current)
+* `predict_forecast.csv`: Forecasted weather data (next day)
+* `analysis.ipynb`: PySpark-based analysis of weather statistics
+* `prediction.ipynb`: Linear regression model and prediction using Spark
+* `dashboard.py`: Web dashboard for interactive visualization
+* `README.md`: Project documentation
 
-**Key Features**
+**Features**
 
-* Real-time data ingestion using Kafka
-* Scalable batch data processing using Apache Spark
-* Machine learning-based temperature prediction using linear regression
-* Interactive dashboard for visualization
-* Tested on a distributed Spark setup with master and slave nodes
+* Real-time weather data ingestion using Kafka
+* Distributed processing with PySpark
+* Machine learning predictions using Spark MLlib
+* Interactive visualization through Dash
+* Tested in a cluster environment with master and slave Spark nodes
 
-**Sample Output from Spark**
+**Sample Output (from analysis)**
 
-| City     | Average Temperature | Average Humidity | Wind Speed | Cloudiness |
-| -------- | ------------------- | ---------------- | ---------- | ---------- |
-| Toronto  | 275.62              | 92.0             | 3.6        | 100.0      |
-| Edmonton | 263.74              | 75.0             | 2.24       | 56.0       |
+| City     | Avg Temperature | Avg Humidity | Wind Speed | Cloudiness |
+| -------- | --------------- | ------------ | ---------- | ---------- |
+| Toronto  | 275.62          | 92.0         | 3.6        | 100.0      |
+| Edmonton | 263.74          | 75.0         | 2.24       | 56.0       |
 
-**Setup Instructions**
+**How to Run the Project**
 
-1. Set up Kafka and start the broker on the master node (localhost:9092).
-2. Configure Spark in standalone cluster mode with one master and one slave node.
-3. Run `kafka_producer.py` to collect and stream weather data to Kafka.
-4. Execute `spark_analysis.py` on the master node to process the collected data.
-5. Run `temperature_prediction.py` to perform temperature prediction using Spark MLlib.
-6. Launch `dashboard.py` to start the Dash web interface and visualize results.
+1. Start Kafka broker on master node (default: localhost:9092)
+2. Configure Spark in standalone cluster mode (1 master, 1 slave)
+3. Run `kafkafetch.ipynb` to collect and publish weather data
+4. Run `analysis.ipynb` to compute average statistics
+5. Run `prediction.ipynb` to generate temperature predictions
+6. Run `dashboard.py` to launch the web-based dashboard
+
 
